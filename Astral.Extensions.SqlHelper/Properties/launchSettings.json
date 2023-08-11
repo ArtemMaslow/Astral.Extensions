@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Astral.Extensions.SqlHelper": {
+      "commandName": "Project",
+      "nativeDebugging": false
+    }
+  }
+}
