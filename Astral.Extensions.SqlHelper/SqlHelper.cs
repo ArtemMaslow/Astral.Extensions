@@ -19,6 +19,12 @@ namespace Astral.Extensions.SqlHelper
 
         public string GetSqlSelect<T>()
         {
+            _checkedPrperties.Clear();
+            _types.Clear();
+            _fields.Clear();
+            _joins.Clear();
+            _aliasCounter = 0;
+
             var type = typeof(T);
             var properties = type.GetProperties();
             var tableName = GetCustomAttribute<TableAttribute>(type, false).Name;
@@ -52,12 +58,11 @@ namespace Astral.Extensions.SqlHelper
                         _types.Add(property.PropertyType.FullName, innerClassProperties);
                     }
                     var innerTableName = GetCustomAttribute<TableAttribute>(property.PropertyType, false).Name;
-
                     var innerTableAlias = GetTableAlias();
                     var joinOnAttribute = GetCustomAttribute<JoinOn>(property, false);
-                    var leftProp = properties.Single(p => p.Name == joinOnAttribute.LeftPart);
-                    var lefPropColumn = GetCustomAttribute<ColumnAttribute>(leftProp, false).Name; 
-                    var rightProp = innerClassProperties.Single(p => p.Name == joinOnAttribute.RightPart);
+                    var leftProp = GetNameProperty(properties, joinOnAttribute.LeftPart);
+                    var lefPropColumn = GetCustomAttribute<ColumnAttribute>(leftProp, false).Name;
+                    var rightProp = GetNameProperty(innerClassProperties, joinOnAttribute.RightPart);
                     var rightPropColumn = GetCustomAttribute<ColumnAttribute>(rightProp, false).Name;
                     _joins.Add($"\tjoin {innerTableName} {innerTableAlias} on {tableAlias}.{lefPropColumn} = {innerTableAlias}.{rightPropColumn}");
                     GetSql(innerClassProperties, innerTableAlias);
@@ -91,6 +96,16 @@ namespace Astral.Extensions.SqlHelper
         {
             AttributeIsDefined<T>(member);
             return member.GetCustomAttribute<T>(inherit);
+        }
+
+        private PropertyInfo GetNameProperty(PropertyInfo[] properties, string propertyName)
+        {
+            var property = properties.SingleOrDefault(p => p.Name == propertyName);
+            if(property == null)
+            {
+                throw new Exception($"Отсутствует свойство {propertyName} в классе {properties[0].ReflectedType.Name}");
+            }
+            return property;
         }
 
     }
