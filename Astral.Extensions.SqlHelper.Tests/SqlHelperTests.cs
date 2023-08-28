@@ -19,6 +19,9 @@ namespace Astral.Extensions.SqlHelper.Tests
             _sqlHelper = new SqlHelper();
         }
 
+        /// <summary>
+        /// Ожидаем ошибку отсутствия атрибута TableAttribute
+        /// </summary>
         [Test]
         public void GetSqlSelect_ErrorTableAttribute()
         {
@@ -26,6 +29,9 @@ namespace Astral.Extensions.SqlHelper.Tests
             Assert.That(ex.Message, Is.EqualTo("У UserWithoutTableAttribute отсутсвует атрибут TableAttribute"));
         }
 
+        /// <summary>
+        /// Ожидаем ошибку связывания двух классов между собой
+        /// </summary>
         [Test]
         public void GetSqlSelect_ErrorIncorrectNameInJoinOnAttribute()
         {
@@ -33,6 +39,9 @@ namespace Astral.Extensions.SqlHelper.Tests
             Assert.That(ex.Message, Is.EqualTo("Отсутствует свойство RoleI в классе UserWithIncorrectNameInJoinOnAttribute"));
         }
 
+        /// <summary>
+        /// Ожидаем ошибку отсутствия атрибута ColumnAttribute
+        /// </summary>
         [Test]
         public void GetSqlSelect_ErrorColumnAttributeOnBoundProperty()
         {
@@ -40,16 +49,19 @@ namespace Astral.Extensions.SqlHelper.Tests
             Assert.That(ex.Message, Is.EqualTo("У UserWithoutColumnAttributeOnBoundProperty.RoleId отсутсвует атрибут ColumnAttribute"));
         }
 
+        /// <summary>
+        /// Ожидаем корректную отработку метода для правильно оформленных классов
+        /// </summary>
         [Test]
         public void GetSqlSelect_Correct()
         {
             var sqls = new List<string>();
             var assembly = typeof(SqlHelperTests).Assembly;
             var correctClasses = assembly.ExportedTypes.Where(et => et.Namespace.Contains("CorrectClasses"));
-            MethodInfo method = typeof(SqlHelper).GetMethod(nameof(SqlHelper.GetSqlSelect));
+            var method = typeof(SqlHelper).GetMethod(nameof(SqlHelper.GetSqlSelect));
             foreach (var type in correctClasses) 
             {
-                MethodInfo generic = method.MakeGenericMethod(type);
+                var generic = method.MakeGenericMethod(type);
                 var result = (string)generic.Invoke(_sqlHelper, null);
                 sqls.Add(result);
             }
