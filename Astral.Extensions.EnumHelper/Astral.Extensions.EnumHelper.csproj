@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <PackageOutputPath>D:\GitHub\Astral.Extensions\MyNugetPackages</PackageOutputPath>
+    <Version>1.0.5</Version>
+  </PropertyGroup>
+
+</Project>

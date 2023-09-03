@@ -5,6 +5,7 @@
     <OutputType>Library</OutputType>
     <Title>Astral.Extensions.SqlHelper</Title>
     <Version>1.0.2</Version>
+    <PackageOutputPath>D:\GitHub\Astral.Extensions\MyNugetPackages</PackageOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
