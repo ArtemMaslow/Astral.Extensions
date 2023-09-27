@@ -16,13 +16,13 @@ namespace Astral.Extensions.RegexBenchmarks
         private static string _testEmail = "test@test.ru";
 
         [Benchmark]
-        public static bool IsEmail()
+        public bool IsEmail()
         {
             return _emailRegex.IsMatch(_testEmail);
         }
 
         [Benchmark]
-        public static bool IsEmailRegexCompiled()
+        public bool IsEmailRegexCompiled()
         {
             return _compiledEmailRegex.IsMatch(_testEmail);
         }

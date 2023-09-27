@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Astral.Extensions.EnumHelper" Version="1.0.0" />
+    <PackageReference Include="Astral.Extensions.EnumHelper" Version="1.0.6" />
     <PackageReference Include="BenchmarkDotNet" Version="0.13.7" />
   </ItemGroup>
 </Project>
